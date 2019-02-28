@@ -41,5 +41,6 @@ Open your browser to `http://localhost:8080` to view this map demo app.
 _...to do..._
 
 ## Contributors
-Chris Henrick ([@clhenrick](http://github.com/clhenrick))
-Taras Novak ([@RandomFractals](http://github.com/RandomFractals))
+- Chris Henrick ([@clhenrick](http://github.com/clhenrick))
+- Randy Zwitch ([@randyzwitch](http://github.com/@randyzwitch))
+- Taras Novak ([@RandomFractals](http://github.com/RandomFractals))
