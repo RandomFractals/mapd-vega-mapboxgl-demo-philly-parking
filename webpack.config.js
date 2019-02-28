@@ -1,6 +1,7 @@
 const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 const NameAllModulesPlugin = require('name-all-modules-plugin');
 const webpack = require("webpack");
 
@@ -57,7 +58,10 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.ProvidePlugin({
       mapboxgl: "mapbox-gl/dist/mapbox-gl"
-    })
+    }),
+    new CopyWebpackPlugin([{
+      from: 'src/images', to: 'images'
+    }])
   ],
   optimization: {
     splitChunks: {

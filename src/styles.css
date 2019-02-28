@@ -24,7 +24,7 @@ body {
   display: flex;
 }
 
-img.logo {
+.logo {
   height: calc(100% - 30px);
   width: auto;
   display: block;
