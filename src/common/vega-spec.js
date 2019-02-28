@@ -1,6 +1,9 @@
+import { updateMap } from '../components/map';
+import { renderVega } from './mapd-connector';
+import { conv4326To900913 } from './utils';
 import sls from 'single-line-string';
 
-export const makeVegaSpec = ({
+export const createVegaSpec = ({
   width,
   height,
   minXBounds,
@@ -31,13 +34,13 @@ export const makeVegaSpec = ({
     {
       "name": "x",
       "type": "linear",
-      "domain": [ minXBounds, maxXBounds],
+      "domain": [minXBounds, maxXBounds],
       "range": "width"
     },
     {
       "name": "y",
       "type": "linear",
-      "domain": [ minYBounds, maxYBounds ],
+      "domain": [minYBounds, maxYBounds],
       "range": "height"
     },
     {
@@ -73,9 +76,7 @@ export const makeVegaSpec = ({
       "nullValue": "rgba(202,202,202,0.85)"
     }
   ],
-  "projections": [
-
-  ],
+  "projections": [],
   "marks": [
     {
       "type": "points",
@@ -100,3 +101,32 @@ export const makeVegaSpec = ({
     }
   ]
 });
+
+export function updateVega(map, dateString = '2012-01-01 00:00:00') {
+  const container = map.getContainer();
+  const height = container.clientHeight;
+  const width = container.clientWidth;
+
+  const {_sw, _ne} = map.getBounds();
+  const [xMin, yMin] = conv4326To900913([_sw.lng, _sw.lat]);
+  const [xMax, yMax] = conv4326To900913([_ne.lng, _ne.lat]);
+
+  const vegaSpec = createVegaSpec({
+    width,
+    height,
+    minXBounds: xMin,
+    maxXBounds: xMax,
+    minYBounds: yMin,
+    maxYBounds: yMax,
+    dateString
+  });
+
+  // render the vega and add it to the map
+  renderVega(vegaSpec)
+    .then(result => {
+      updateMap(result);
+    })
+    .catch(error => {
+      throw error;
+    });
+};

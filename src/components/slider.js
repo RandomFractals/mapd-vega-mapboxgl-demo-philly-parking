@@ -4,13 +4,13 @@ import {
   monthCount,
   timeFormatter,
   timeScale
-} from '../common/date-time-utils';
+} from '../common/time-utils';
 
 let slider = null;
 const WAIT_TIME_MS = 100;
 
-function handleInput(event) {
-  console.log(timeFormatter(timeScale.invert(event.target.value)));
+function onInput(event) {
+  console.log('slider:input:', timeFormatter(timeScale.invert(event.target.value)));
   dispatcher.call(
     'sliderInput',
     null,
@@ -34,6 +34,7 @@ export function getValue() {
 export function initSlider() {
   slider = document.querySelector('input.slider');
   slider.setAttribute('max', monthCount);
-  slider.addEventListener('input', throttle(handleInput, WAIT_TIME_MS, { leading: true }));
+  slider.addEventListener('input', 
+    throttle(onInput, WAIT_TIME_MS, { leading: true }));
   return slider;
 }

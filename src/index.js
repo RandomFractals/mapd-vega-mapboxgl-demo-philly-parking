@@ -2,13 +2,17 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import 'mapbox-gl/dist/mapboxgl-overrides';
 import './styles.css';
 
-import {serverInfo} from './common/config';
-import {updateVega} from './common/updateVega';
-import {getConnection, getConnectionStatus, saveConnectionObj} from './common/mapd-connector';
-import {initMap} from './components/map';
-import {initSlider} from './components/slider';
-import {initDateReadOut} from './components/dateReadOut';
-import {initPlayPauseButton} from './components/playPauseControl';
+import { serverInfo } from './common/config';
+import { updateVega } from './common/vega-spec';
+import { 
+  getConnection, 
+  getConnectionStatus, 
+  saveConnectionObj 
+} from './common/mapd-connector';
+import { initMap } from './components/map';
+import { initSlider } from './components/slider';
+import { initTimeLabel } from './components/time-label';
+import { initPlayPauseButton } from './components/play-pause-control';
 
 // main app bootstrapping on content loaded
 document.addEventListener('DOMContentLoaded', main);
@@ -22,39 +26,32 @@ function main() {
         <div class="slider-controls">
           <input class="slider" type="range" min="0" max="11" step="1" value="0" />
           <button class="play-pause">PLAY</button>
-          <label class="date-read-out"></label>
+          <label class="time-label"></label>
         </div>
       </div>
       </div>
     </div>
     <div id="map"></div>`;
 
-  // create the mapboxgl map
+  // initialize app controls
   const map = initMap();
-
-  // set up the slider
   const slider = initSlider();
-
-  // set up date read out
-  initDateReadOut();
-
-  // set up the play pause button
+  initTimeLabel();
   initPlayPauseButton();
 
   // connect to the mapd backend
   getConnection(serverInfo)
-    .then(con => {
-      // save the connection object so we can use it later
-      saveConnectionObj(con);
-      // check the connection status
-      return getConnectionStatus(con);
+    .then(connection => {
+      // save connection for later use
+      saveConnectionObj(connection);
+      // check connection status
+      return getConnectionStatus(connection);
     })
     .then(status => {
       if (status && status[0] && status[0].rendering_enabled) {
-        // render the vega and add it to the map
+        // render updated vega spec and add it to the map
         updateVega(map);
       } else {
-        // no BE rendering :(
         throw Error("backend rendering is not enabled");
       }
     })
