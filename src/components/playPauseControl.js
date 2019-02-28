@@ -1,57 +1,55 @@
-import { interval } from "d3-timer"
-import { updateSliderPos, getValue } from "./slider"
-import { numberMonths } from "../common/date-time-utils"
+import { interval } from 'd3-timer';
+import { updateSliderPosition, getValue } from './slider';
+import { monthCount } from '../common/date-time-utils';
 
-let playPauseBtn = null
-let timerInstance = null
-let isPlaying = false
-let sliderValue = 0
+let playPauseButton = null;
+let timerInstance = null;
+let isPlaying = false;
+let sliderValue = 0;
 
-const ONE_SEC = 1000
-const totalTime = 10 * 10 * ONE_SEC
-const delay = totalTime / numberMonths
+const ONE_SEC = 1000;
+const totalTime = 10 * 10 * ONE_SEC;
+const delay = totalTime / monthCount;
 
 function stop () {
-  isPlaying = false
-  timerInstance.stop()
-  playPauseBtn.innerHTML = "PLAY"
+  isPlaying = false;
+  timerInstance.stop();
+  playPauseButton.innerHTML = 'PLAY';
 }
 
 function play () {
   if (timerInstance) {
-    timerInstance = null
+    timerInstance = null;
   }
 
-  isPlaying = true
-  playPauseBtn.innerHTML = "PAUSE"
-  sliderValue = getValue()
+  isPlaying = true;
+  playPauseButton.innerHTML = 'PAUSE';
+  sliderValue = getValue();
 
   timerInstance = interval(elapsed => {
-    //console.log(elapsed)
+    // console.log(elapsed);
     if (!isPlaying) {
-      stop()
-    } else if (sliderValue > numberMonths) {
-      sliderValue = 0
-      updateSliderPos(sliderValue)
+      stop();
+    } else if (sliderValue > monthCount) {
+      sliderValue = 0;
+      updateSliderPosition(sliderValue);
     } else {
-      sliderValue = sliderValue + 1
-      updateSliderPos(sliderValue)
+      sliderValue = sliderValue + 1;
+      updateSliderPosition(sliderValue);
     }
-  }, delay)
+  }, delay);
 }
 
 function handleClick (event) {
-  event.preventDefault()
+  event.preventDefault();
   if (isPlaying) {
-    stop()
+    stop();
   } else {
-    play()
+    play();
   }
 }
 
-function initplayPauseBtn () {
-  playPauseBtn = document.querySelector("button.play-pause")
-  playPauseBtn.addEventListener("click", handleClick)
+export function initPlayPauseButton () {
+  playPauseButton = document.querySelector('button.play-pause');
+  playPauseButton.addEventListener('click', handleClick);
 }
-
-export default initplayPauseBtn

@@ -1,19 +1,19 @@
-import { dispatch } from "d3-dispatch"
-import updateVega from "./updateVega"
-import { getMap } from "../components/map"
-import { updateDateReadOut } from "../components/dateReadOut"
-import { timeFormatter, timeFormatterDR } from "./date-time-utils"
+import { dispatch } from 'd3-dispatch';
+import { updateVega } from './updateVega';
+import { getMap } from '../components/map';
+import { updateDateReadOut } from '../components/dateReadOut';
+import { timeFormatter, monthYearFormatter } from './date-time-utils';
 
 // use d3's dispatch module to handle updating the map on user events
-const dispatcher = dispatch("sliderInput", "mapMove")
+const dispatcher = dispatch('sliderInput', 'mapMove');
 
-dispatcher.on("sliderInput", (value) => {
-  updateVega(getMap(), timeFormatter(value))
-  updateDateReadOut(timeFormatterDR(value))
-})
+dispatcher.on('sliderInput', (value) => {
+  updateVega(getMap(), timeFormatter(value));
+  updateDateReadOut(monthYearFormatter(value));
+});
 
-dispatcher.on("mapMove", () => {
-  updateVega(getMap())
-})
+dispatcher.on('mapMove', () => {
+  updateVega(getMap());
+});
 
-export default dispatcher
+export default dispatcher;

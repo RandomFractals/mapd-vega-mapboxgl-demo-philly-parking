@@ -1,15 +1,15 @@
-import dispatcher from "../common/dispatcher"
-import { startDate, timeFormatterDR } from "../common/date-time-utils"
+import { startDate } from '../common/config';
+import { monthYearFormatter } from '../common/date-time-utils';
 
-let dateReadOut = null
+let dateReadOut = null;
 
 export function initDateReadOut() {
-  dateReadOut = document.querySelector(".date-read-out")
-  dateReadOut.innerHTML = timeFormatterDR(startDate)
+  dateReadOut = document.querySelector('.date-read-out');
+  dateReadOut.innerHTML = monthYearFormatter(startDate);
 }
 
 export function updateDateReadOut(value) {
-  dateReadOut.innerHTML = value
+  dateReadOut.innerHTML = value;
 }
 
-export default dateReadOut
+export default dateReadOut;

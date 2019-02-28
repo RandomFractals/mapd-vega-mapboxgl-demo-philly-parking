@@ -1,6 +1,6 @@
-import sls from "single-line-string"
+import sls from 'single-line-string';
 
-const makeVegaSpec = ({
+export const makeVegaSpec = ({
   width,
   height,
   minXBounds,
@@ -100,5 +100,3 @@ const makeVegaSpec = ({
     }
   ]
 });
-
-export default makeVegaSpec
