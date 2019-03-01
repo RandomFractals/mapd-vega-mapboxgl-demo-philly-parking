@@ -1,4 +1,4 @@
-import { timeParse } from 'd3-time-format';
+import { timeParser } from './time-utils';
 
 // map data replay start and end date
 export const startDate = timeParser('January 01 2012');
