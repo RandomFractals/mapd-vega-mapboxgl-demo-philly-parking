@@ -7,7 +7,7 @@ import { updateVega } from './common/vega-spec';
 import { 
   getConnection, 
   getConnectionStatus, 
-  saveConnectionObj 
+  saveConnection 
 } from './common/mapd-connector';
 import { initMap } from './components/map';
 import { initSlider } from './components/slider';
@@ -43,7 +43,7 @@ function main() {
   getConnection(serverInfo)
     .then(connection => {
       // save connection for later use
-      saveConnectionObj(connection);
+      saveConnection(connection);
       // check connection status
       return getConnectionStatus(connection);
     })
@@ -52,7 +52,7 @@ function main() {
         // render updated vega spec and add it to the map
         updateVega(map);
       } else {
-        throw Error("backend rendering is not enabled");
+        throw Error("MapD back-end rendering is not enabled :(");
       }
     })
     .catch(error => {

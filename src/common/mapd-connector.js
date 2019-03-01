@@ -1,5 +1,6 @@
 import MapDCon from '@mapd/connector/dist/browser-connector';
 
+// mapd back-end connection setup
 const connector = new window.MapdCon();
 let savedConnection = null;
 
@@ -11,12 +12,12 @@ function establishConnection(config) {
       .dbName(config.database)
       .user(config.username)
       .password(config.password)
-      .connect((error, con) => {
+      .connect((error, connection) => {
         if (error) {
           reject(error);
-        } else if (con) {
-          console.log(con);
-          resolve(con);
+        } else if (connection) {
+          console.log('mapd-connector:connection:', connection);
+          resolve(connection);
         }
       })
   })
@@ -24,25 +25,23 @@ function establishConnection(config) {
 
 async function getConnection(config) {
   try {
-    const result = await establishConnection(config);
-    return result;
+    return await establishConnection(config);
   } catch(error) {
     return error;
   }
 }
 
-async function getConnectionStatus(con) {
+async function getConnectionStatus(connection) {
   try {
-    let result = await con.getStatusAsync();
-    return result;
+    return await connection.getStatusAsync();
   } catch(error) {
     return error;
   }
 }
 
 // store the connection once we've established it
-function saveConnectionObj(con) {
-  savedConnection = con;
+function saveConnection(connection) {
+  savedConnection = connection;
 }
 
 async function renderVega (vegaSpec, vegaOptions = {returnTiming: true}) {
@@ -68,6 +67,6 @@ async function renderVega (vegaSpec, vegaOptions = {returnTiming: true}) {
 export {
   getConnection,
   getConnectionStatus,
-  saveConnectionObj,
+  saveConnection,
   renderVega
 };
